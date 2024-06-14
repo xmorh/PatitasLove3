@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        PatitasLove
+    </title>
+    <!-- Enlace al archivo CSS de Tailwind -->
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- <link rel="icon" type="image/png" href="{% static 'img/logoremovebg.png' %}"> -->
+    <link rel="icon" type="image/png" href="{% static 'img/logoremovebg.png' %}">
+</head>
+
+<body>
+
+    <header class="bg-pink-600 text-white py-6">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <!-- Contenedor del logo y texto -->
+            <div class="flex items-center">
+                <!-- Logo -->
+                <img src="{% static 'img/logoremovebg.png'%}" alt="Logo de Mi Sitio" class="h-16 mr-4">
+
+                <!-- Texto "PatitasLove" -->
+                <div class="text-xl font-medium">PatitasLove</div>
+            </div>
+
+            <!-- Navegación -->
+            <nav>
+                <ul class="flex space-x-8 text-lg">
+                    <li><a href="{% url 'home'%}" class="hover:text-gray-300 text-lg font-bold">Productos</a></li>
+                    <li><a href="{% url 'contacto'%}" class="hover:text-gray-300 text-lg font-bold">Contacto</a></li>
+                    <li><a href="{% url 'sesion'%}" class="hover:text-gray-300 text-lg font-bold">Inicio de Sesión</a></li>
+                    <li><a href="{% url 'carrito' %}" class="hover:text-gray-300 text-lg font-bold">
+                            <!-- <i class="fa-solid fa-basket-shopping fa-xl" style="color: #ffffff;"></i> -->
+                            <!-- <i class="fa-brands fa-shopify fa-xl" style="color: #ffffff;"></i> -->
+                            <i class="fa-solid fa-cart-shopping fa-xl" style="color: #ffffff;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+
+
+    <div id="contenido">
+        {% block contenido %}
+        {%endblock%}
+    </div>
+
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-4 gap-8">
+                <!-- Sección "Localiza tu tienda" -->
+                <div>
+                    <h2 class="text-lg font-semibold mb-2">Localiza tu tienda</h2>
+                    <p>Somos una familia de más de 55 tiendas a lo largo de todo Chile, así que siempre tendrás una
+                        tienda PatitasLove ahí donde estés. ¡Encuentra la más cercana!</p>
+                </div>
+
+                <!-- Sección "Mi cuenta" -->
+                <div>
+                    <h2 class="text-lg font-semibold mb-2">Mi cuenta</h2>
+                    <ul>
+                        <li><a href="#">Entrar en mi cuenta</a></li>
+                        <li><a href="#">Mis pedidos</a></li>
+                        <li><a href="#">Guía de Compra</a></li>
+                        <li><a href="#">Info de Envío</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Términos y condiciones</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sección "Contacto" -->
+                <div>
+                    <h2 class="text-lg font-semibold mb-2">Contacto</h2>
+                    <ul>
+                        <li>Mail: ventas@patitaslove.cl</li>
+                        <li>Teléfono: +56227607777</li>
+                        <li>WhatsApp: +56939173519</li>
+                        <li>Servicio de atención:</li>
+                        <li>Lunes a sábados. 8:00 a 21:00</li>
+                        <li>Domingo 9:00 a 20:00.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold mb-2">PatitasLove</h2>
+                    <ul>
+                        <li><a href="#">Acerca de PatitasLove</a></li>
+                        <li><a href="#">Canal de denuncias</a></li>
+                        <li><a href="#">Trabaja con nosotros</a></li>
+                        <li><a href="#">Jornadas de adopción</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
