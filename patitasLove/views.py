@@ -1,15 +1,15 @@
 from django.shortcuts import render
-# from .models import Producto
+from .models import Producto
 
 # Create your views here.
 
 def home(request):
-    # productos = Producto.objects.all()
-    # data = {
-    #     'productos': productos
-    # }
+    productos = Producto.objects.all()
+    data = {
+        'productos': productos
+    }
     # se saco esto en el return , data
-    return render(request, 'patitasLove/home.html')
+    return render(request, 'patitasLove/home.html', data)
 
 def contacto(request):
     return render(request, 'patitasLove/contacto.html')
