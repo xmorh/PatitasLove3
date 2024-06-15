@@ -1,0 +1,45 @@
+<div class "alert alert-primary" role="alert">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="row" colspan="3" class="text-center">CARRITO</th>
+            </tr>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if request.session.carrito.items %}
+            {% for key, value in request.session.carrito.items %}
+            <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.precio }}</td>
+                    <td>{{ producto.cantidad }}
+                        <a href="{% url 'agregar' producto.id %}" class="btn btn-primary">+</a>
+                        <a href="{% url 'eliminar' producto.id %}" class="btn btn-primary">-</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% else %}
+
+            <tr>
+                <td colspan="3">
+                    <div class="alert alert-danger text-center">
+                        No hay productos en el carrito </div>
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <th scope="row">Total:</th>
+                <td colspan="2">{{ total_carrito }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr> 
+</div>
+<div class="row text-center">
+    <div class="col-6"><a href="{% url 'limpiar' %}" class="btn btn-primary">Limpiar</a></div>
+    <div class="col-6"><a href="#" class="btn btn-primary">Guardar</a></div>
+</div>

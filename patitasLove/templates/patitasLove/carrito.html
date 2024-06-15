@@ -11,16 +11,26 @@
         <!-- Producto 1 -->
         <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
             <div>
-                <h2 class="text-lg font-semibold">Producto 1</h2>
-                <p class="text-gray-500">Precio: $10.00</p>
+            {% for producto in productos %}
+                <div class="col-6">
+                    <div class="card" style="height: 10rem; width: 23rem; margin 5px 0px;">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ producto.nombre }}</h2>
+                            <p class="card-text">{{ producto.marca }}</p>
+                            <p class="card-text">{{ producto.precio }}</p>
+                                <a href="{% url 'agregar' producto.id %}" class="btn btn-primary">Agregar al carrito</a>
+            {% endfor %}
             </div>
             <div class="flex items-center">
                 <input type="number" class="w-16 h-10 border-gray-300 border rounded-md text-center" value="1">
                 <button class="ml-4 bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700">Eliminar</button>
             </div>
         </div>
-
-        <!-- Producto 2 -->
+    </div>
+        <div class="col-4">
+            {% include "patitasLove/carro.html" %}
+        </div>
+        {% comment %} <!-- Producto 2 -->
         <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
             <div>
                 <h2 class="text-lg font-semibold">Producto 2</h2>
@@ -31,7 +41,7 @@
                 <button class="ml-4 bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700">Eliminar</button>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 
     <!-- Total y botón de pagar -->
     <div class="my-16 flex justify-end">
