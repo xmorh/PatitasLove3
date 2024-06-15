@@ -9,33 +9,24 @@
     <!-- Lista de productos en el carrito -->
     <div class="grid grid-cols-1 gap-8">
         <!-- Producto 1 -->
+        {% for item in items %}
+            
         <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
             <div>
-                <h2 class="text-lg font-semibold">Producto 1</h2>
-                <p class="text-gray-500">Precio: $10.00</p>
+                <h2 class="text-lg font-semibold">{{item.producto.nombre}}</h2>
+                <p class="text-gray-500">{{item.producto.precio}}</p>
             </div>
             <div class="flex items-center">
-                <input type="number" class="w-16 h-10 border-gray-300 border rounded-md text-center" value="1">
-                <button class="ml-4 bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700">Eliminar</button>
+                <input type="" readonly class="w-16 h-10 border-gray-300 border rounded-md text-center" value="{{item.cantidad}}">
+                <!-- <button class="ml-4 bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700">Eliminar</button> -->
             </div>
         </div>
-
-        <!-- Producto 2 -->
-        <div class="bg-white rounded-lg shadow-md p-4 flex items-center justify-between">
-            <div>
-                <h2 class="text-lg font-semibold">Producto 2</h2>
-                <p class="text-gray-500">Precio: $20.00</p>
-            </div>
-            <div class="flex items-center">
-                <input type="number" class="w-16 h-10 border-gray-300 border rounded-md text-center" value="1">
-                <button class="ml-4 bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700">Eliminar</button>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 
     <!-- Total y botón de pagar -->
     <div class="my-16 flex justify-end">
-        <h2 class="text-lg font-semibold mr-8">Total: $30.00</h2>
+        <h2 class="text-lg font-semibold mr-8">Total: {{total}}</h2>
         <button class="bg-pink-600 text-white px-8 py-3 rounded-md hover:bg-pink-700">Pagar</button>
     </div>
 </div>

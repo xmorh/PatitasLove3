@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .models import Producto
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Producto, Carrito, CarritoItem
 
 # Create your views here.
 
@@ -20,5 +20,47 @@ def registro(request):
 def sesion(request):
     return render(request, 'patitasLove/sesion.html')
 
-def carrito(request):
-    return render(request, 'patitasLove/carrito.html')
+def agregar_al_carrito(request, producto_id):
+   
+    producto = get_object_or_404(Producto, id=producto_id)
+    carrito_id = request.session.get('carrito_id')
+
+    if carrito_id:
+        carrito = Carrito.objects.get(id=carrito_id)
+    else:
+        carrito = Carrito.objects.create()
+        request.session['carrito_id'] = carrito.id
+
+    item, created = CarritoItem.objects.get_or_create(carrito=carrito, producto=producto)
+    if not created:
+        item.cantidad += 1
+        item.save()
+
+ 
+    return redirect('ver_carrito')
+
+def ver_carrito(request):
+    carrito_id = request.session.get('carrito_id')
+    if carrito_id:
+        carrito = Carrito.objects.get(id=carrito_id)
+        items = CarritoItem.objects.filter(carrito=carrito)
+        total = sum(item.subtotal() for item in items)
+    else:
+        carrito = None
+        items = []
+        total = 0
+    
+    data = {
+        'items': items,
+        'total': total
+    }
+    return render(request, 'patitasLove/carrito.html', data)
+
+# def eliminar_del_carrito(request, producto_id):
+#     carrito_id = request.session.get('carrito_id')
+#     carrito = get_object_or_404(Carrito, id=carrito_id)
+#     producto = get_object_or_404(Producto, id=producto_id)
+#     item = CarritoItem.objects.get(carrito=carrito, producto=producto)
+#     item.delete()
+
+#     return redirect('ver_carrito')
