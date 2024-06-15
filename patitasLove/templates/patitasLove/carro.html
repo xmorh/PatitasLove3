@@ -17,7 +17,7 @@
                     <td>{{ producto.nombre }}</td>
                     <td>{{ producto.precio }}</td>
                     <td>{{ producto.cantidad }}
-                        <a href="{% url 'agregar' producto.id %}" class="btn btn-primary">+</a>
+                        <a href="{% url 'add' producto.id %}" class="btn btn-primary">+</a>
                         <a href="{% url 'eliminar' producto.id %}" class="btn btn-primary">-</a>
                     </td>
                 </tr>

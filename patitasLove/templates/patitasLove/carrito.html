@@ -18,7 +18,7 @@
                             <h2 class="card-title">{{ producto.nombre }}</h2>
                             <p class="card-text">{{ producto.marca }}</p>
                             <p class="card-text">{{ producto.precio }}</p>
-                                <a href="{% url 'agregar' producto.id %}" class="btn btn-primary">Agregar al carrito</a>
+                                <a href="{% url 'add' producto.id %}" class="btn btn-primary">Agregar al carrito</a>
             {% endfor %}
             </div>
             <div class="flex items-center">
