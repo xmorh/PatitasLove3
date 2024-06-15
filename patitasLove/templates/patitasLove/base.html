@@ -11,7 +11,6 @@
     {% load static %}
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- <link rel="icon" type="image/png" href="{% static 'img/logoremovebg.png' %}"> -->
     <link rel="icon" type="image/png" href="{% static 'img/logoremovebg.png' %}">
 </head>
 
@@ -33,7 +32,14 @@
                 <ul class="flex space-x-8 text-lg">
                     <li><a href="{% url 'home'%}" class="hover:text-gray-300 text-lg font-bold">Productos</a></li>
                     <li><a href="{% url 'contacto'%}" class="hover:text-gray-300 text-lg font-bold">Contacto</a></li>
-                    <li><a href="{% url 'sesion'%}" class="hover:text-gray-300 text-lg font-bold">Inicio de Sesión</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout'%}" class="hover:text-gray-300 text-lg font-bold">Cerrar Sesión</a></li>
+                        <li><a href="#" class="hover:text-gray-300 text-lg font-bold">{{ user.username }}</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login'%}" class="hover:text-gray-300 text-lg font-bold">Inicio de Sesión</a>
+                    </li>
+                    {%endif%}
+
                     <li><a href="{% url 'carrito' %}" class="hover:text-gray-300 text-lg font-bold">
                             <!-- <i class="fa-solid fa-basket-shopping fa-xl" style="color: #ffffff;"></i> -->
                             <!-- <i class="fa-brands fa-shopify fa-xl" style="color: #ffffff;"></i> -->
