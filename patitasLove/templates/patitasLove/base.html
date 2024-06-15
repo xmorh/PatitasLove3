@@ -34,6 +34,7 @@
                     <li><a href="{% url 'contacto'%}" class="hover:text-gray-300 text-lg font-bold">Contacto</a></li>
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'logout'%}" class="hover:text-gray-300 text-lg font-bold">Cerrar Sesión</a></li>
+                        <li><a href="#" class="hover:text-gray-300 text-lg font-bold">{{ user.username }}</a></li>
                     {% else %}
                         <li><a href="{% url 'login'%}" class="hover:text-gray-300 text-lg font-bold">Inicio de Sesión</a>
                     </li>
