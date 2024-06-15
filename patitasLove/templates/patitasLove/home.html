@@ -1,7 +1,7 @@
 {% extends 'patitasLove/base.html' %}
 {% load static %}
 {% block contenido %}
-
+{% load humanize %}
 <div class="container mx-auto px-4">
     <br>
     <h1 class="text-4xl font-semibold text-center mb-6">Productos</h1>
@@ -19,7 +19,7 @@
             <div class="detalles">
                 <h5 class="text-sm text-gray-500"> {{p.marca | capfirst}} </h5>
                 <h2 class="text-lg font-semibold"> {{p.nombre | title}} </h2>
-                <h3 class="text-xl font-bold"> $ {{ p.precio}} </h3>
+                <h3 class="text-xl font-bold"> $ {{ p.precio | intcomma}} </h3>
                 <button class="bg-pink-600 text-white w-full px-4 py-2 rounded-md mt-4 hover:bg-pink-700">Agregar al
                     Carro</button>
             </div>
