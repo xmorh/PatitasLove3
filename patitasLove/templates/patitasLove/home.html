@@ -20,8 +20,10 @@
                 <h5 class="text-sm text-gray-500"> {{p.marca | capfirst}} </h5>
                 <h2 class="text-lg font-semibold"> {{p.nombre | title}} </h2>
                 <h3 class="text-xl font-bold"> $ {{ p.precio | intcomma}} </h3>
-                <button class="bg-pink-600 text-white w-full px-4 py-2 rounded-md mt-4 hover:bg-pink-700">Agregar al
-                    Carro</button>
+                <button class="bg-pink-600 text-white w-full px-4 py-2 rounded-md mt-4 hover:bg-pink-700">
+                    <a href="{% url 'agregar_al_carrito' p.id %}">Agregar al Carro</a>
+                </button>
+                
             </div>
         </div>
         {% endfor %}

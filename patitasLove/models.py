@@ -10,3 +10,18 @@ class Producto(models.Model):
 
     def __str__(self):
         return f"{self.nombre} ({self.marca}) - ${self.precio}"
+    
+class Carrito(models.Model):
+    id = models.AutoField(primary_key=True)
+    productos = models.ManyToManyField(Producto, through='CarritoItem')
+
+class CarritoItem(models.Model):
+    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+
+    def subtotal(self):
+        return self.producto.precio * self.cantidad
+
+    def __str__(self):
+        return f"{self.cantidad} x {self.producto.nombre}"
