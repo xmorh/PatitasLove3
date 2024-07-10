@@ -89,3 +89,23 @@ def listar_producto(request):
     }
     return render(request, 'patitasLove/producto/listar.html', data)
 
+def editar_producto(request, id):
+    producto = get_object_or_404(Producto, id=id)
+
+    data = {
+        'form': ProductoForm(instance=producto)
+    }
+
+    if request.method == 'POST':
+        formulario = ProductoForm(data=request.POST, instance=producto, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            # data["mensaje"] = "Editado Correctamente"
+            return redirect(to='listar_producto')
+        data["form"] = formulario
+    return render(request,'patitasLove/producto/modificar.html', data)
+
+def eliminar_producto(request, id):
+    producto = get_object_or_404(Producto, id=id)
+    producto.delete()
+    return redirect(to='listar_producto')
