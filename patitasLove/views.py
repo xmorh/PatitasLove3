@@ -70,5 +70,22 @@ def agregar_producto(request):
     data = {
         'form': ProductoForm()
     }
+
+    if request.method == 'POST':
+        formulario = ProductoForm(data=request.POST, files=request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            data["mensaje"] = "Guardado Correctamente"
+        else:
+            data["form"] = formulario
+
     return render(request, 'patitasLove/producto/agregar.html', data)
+
+def listar_producto(request):
+    productos = Producto.objects.all()
+
+    data = {
+        'productos': productos
+    }
+    return render(request, 'patitasLove/producto/listar.html', data)
 
