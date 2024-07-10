@@ -1,0 +1,41 @@
+{% extends 'patitasLove/base.html' %}
+{% load static %}
+{% block contenido %}
+<div class="container mx-auto px-4 mt-24 mb-24 ">
+    <div class="max-w-lg mx-auto">
+        <h2 class="text-2xl font-semibold mb-4">Agregar Producto</h2>
+        <form class="space-y-6" action="" method="POST">
+            {% csrf_token %}
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div class="mb-4">
+                    <label for="id_nombre" class="block text-gray-700 mb-2">Nombre:</label>
+                    {{ form.nombre }}
+                </div>
+                <div class="mb-4">
+                    <label for="id_marca" class="block text-gray-700 mb-2">Marca:</label>
+                    {{ form.marca }}
+                </div>
+                <div class="mb-4">
+                    <label for="id_precio" class="block text-gray-700 mb-2">Precio:</label>
+                    {{ form.precio }}
+                </div>
+                <div class="mb-6">
+                    <label for="id_imagen" class="block text-gray-700 mb-2">Imagen:</label>
+                    {{ form.imagen }}
+                </div>
+            </div>
+            <div class="flex justify-between">
+                <button type="submit"
+                    class="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 mr-2">
+                    Guardar Producto
+                </button>
+                <a href="{% url 'home' %}"
+                    class="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 ml-2">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

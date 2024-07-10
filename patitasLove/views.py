@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Carrito, CarritoItem
+from .forms import ProductoForm
 
 # Create your views here.
 
@@ -64,3 +65,10 @@ def ver_carrito(request):
 #     item.delete()
 
 #     return redirect('ver_carrito')
+
+def agregar_producto(request):
+    data = {
+        'form': ProductoForm()
+    }
+    return render(request, 'patitasLove/producto/agregar.html', data)
+
