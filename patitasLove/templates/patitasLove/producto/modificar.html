@@ -1,0 +1,56 @@
+{% extends 'patitasLove/base.html' %}
+{% load static %}
+{% block contenido %}
+<div class="container mx-auto px-4 mt-24 mb-24 ">
+    <div class="max-w-lg mx-auto">
+        <h2 class="text-2xl font-semibold mb-4">Editar Producto</h2>
+        <form class="space-y-6" action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div class="mb-4">
+                    <label for="id_nombre" class="block text-gray-700 mb-2">Nombre:</label>
+                    {{ form.nombre }}
+                </div>
+                <div class="mb-4">
+                    <label for="id_marca" class="block text-gray-700 mb-2">Marca:</label>
+                    {{ form.marca }}
+                </div>
+                <div class="mb-4">
+                    <label for="id_precio" class="block text-gray-700 mb-2">Precio:</label>
+                    {{ form.precio }}
+                </div>
+                <div class="mb-6">
+                    <label for="id_imagen" class="block text-gray-700 mb-2">Imagen:</label>
+                    {{ form.imagen }}
+                </div>
+            </div>
+            <div class="flex justify-between">
+                <button type="submit" value="Editar"
+                    class="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 mr-2">
+                    Guardar Producto
+                </button>
+                <a href="{% url 'home' %}"
+                    class="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 ml-2">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+        <div class="mt-6">
+            {% if mensaje %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">¡Éxito!</strong>
+                <span class="block sm:inline">{{ mensaje }}</span>
+            </div>
+            {% endif %}
+            <!-- {% if form.errors %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">¡Error!</strong>
+                <span class="block sm:inline">Por favor corrija los errores en el formulario.</span>
+            </div>
+            {% endif %} -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
