@@ -32,16 +32,16 @@
                 <ul class="flex space-x-8 text-lg">
                     <li><a href="{% url 'home'%}" class="hover:text-gray-300 text-lg font-bold">Productos</a></li>
                     <li><a href="{% url 'contacto'%}" class="hover:text-gray-300 text-lg font-bold">Contacto</a></li>
+                    {% if user.is_authenticated and user.is_staff %}
+                    <li><a href="{% url 'agregar_producto'%}" class="hover:text-gray-300 text-lg font-bold">Agregar Producto</a></li>
+                    <li><a href="{% url 'listar_producto'%}" class="hover:text-gray-300 text-lg font-bold">Lista Producto</a></li>
+                    <li><a href="{% url 'listar_ventas'%}" class="hover:text-gray-300 text-lg font-bold">Lista de Ventas</a></li>
+                    {% endif %}
                     {% if user.is_authenticated %}
-                    <li><a href="{% url 'agregar_producto'%}" class="hover:text-gray-300 text-lg font-bold">Agregar
-                            Producto</a></li>
-                    <li><a href="{% url 'listar_producto'%}" class="hover:text-gray-300 text-lg font-bold">Lista
-                            Producto</a></li>
-
-                    <li><a href="{% url 'logout'%}" class="hover:text-gray-300 text-lg font-bold">Cerrar Sesión</a></li>
-                    <li><a href="#" class="hover:text-gray-300 text-lg font-bold">{{ user.username }}</a></li>
+                        <li><a href="{% url 'logout'%}" class="hover:text-gray-300 text-lg font-bold">Cerrar Sesión</a></li>
+                        <li><a href="#" class="hover:text-gray-300 text-lg font-bold">{{ user.username }}</a></li>
                     {% else %}
-                    <li><a href="{% url 'login'%}" class="hover:text-gray-300 text-lg font-bold">Inicio de Sesión</a>
+                        <li><a href="{% url 'login'%}" class="hover:text-gray-300 text-lg font-bold">Inicio de Sesión</a>
                     </li>
                     {%endif%}
 

@@ -25,3 +25,25 @@ class CarritoItem(models.Model):
 
     def __str__(self):
         return f"{self.cantidad} x {self.producto.nombre}"
+    
+# class Venta(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     fecha = models.DateTimeField(auto_now_add=True)
+#     productos = models.ManyToManyField(Producto, through='VentaProducto')
+
+class Venta(models.Model):
+    id = models.AutoField(primary_key=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    productos = models.ManyToManyField(Producto, through='VentaProducto')
+
+    def total(self):
+        total = sum(item.producto.precio * item.cantidad for item in self.ventaproducto_set.all())
+        return total
+    
+class VentaProducto(models.Model):
+    venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+
+
+
