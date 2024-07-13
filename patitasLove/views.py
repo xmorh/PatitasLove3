@@ -2,10 +2,20 @@ import json
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Carrito, CarritoItem, Venta, VentaProducto
 from .forms import ProductoForm
-from django.core import serializers
+# from django.core import serializers
 from django.db.models import Q
 from datetime import datetime
-import re
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+import io
+import csv
+from datetime import datetime
+import pytz
+from .models import Venta, VentaProducto
+import xlsxwriter
+
 
 # Create your views here.
 
@@ -186,3 +196,58 @@ def listar_ventas(request):
     }
 
     return render(request, 'patitasLove/ventas/listar_ventas.html', data)
+
+
+def descargar_ventas_excel(request):
+    # Obtener parámetros de fecha desde la solicitud GET
+    fecha_desde_str = request.GET.get('fecha_desde')
+    fecha_hasta_str = request.GET.get('fecha_hasta')
+
+    # Convertir las cadenas de fecha a objetos datetime si existen
+    if fecha_desde_str and fecha_hasta_str:
+        fecha_desde = datetime.strptime(fecha_desde_str, '%Y-%m-%d').date()
+        fecha_hasta = datetime.strptime(fecha_hasta_str, '%Y-%m-%d').date()
+
+        # Filtrar ventas por fecha usando Q objects para combinar condiciones OR
+        ventas = Venta.objects.filter(
+            fecha__date__gte=fecha_desde,
+            fecha__date__lte=fecha_hasta
+        )
+    else:
+        # Si no se proporcionan fechas, descargar todas las ventas
+        ventas = Venta.objects.all()
+
+    # Crear el libro de trabajo y la hoja de cálculo en blanco
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="ventas.xlsx"'
+
+    workbook = xlsxwriter.Workbook(response)
+    worksheet = workbook.add_worksheet('Ventas')
+
+    # Encabezados de columna
+    headers = ['ID Venta', 'Fecha', 'Producto', 'Cantidad', 'Valor Unitario', 'Subtotal']
+    for col, header in enumerate(headers):
+        worksheet.write(0, col, header)
+
+    # Escribir datos de ventas
+    row = 1
+    for venta in ventas:
+        productos_venta = VentaProducto.objects.filter(venta=venta)
+
+        for producto_venta in productos_venta:
+            producto = producto_venta.producto
+            cantidad = producto_venta.cantidad
+            valor_unitario = producto.precio
+            subtotal = cantidad * valor_unitario
+
+            # Escribir datos en la hoja de cálculo
+            worksheet.write(row, 0, venta.id)
+            worksheet.write(row, 1, venta.fecha.strftime('%d/%m/%Y'))
+            worksheet.write(row, 2, f"{producto.nombre} ({cantidad} x ${valor_unitario})")
+            worksheet.write(row, 3, cantidad)
+            worksheet.write(row, 4, valor_unitario)
+            worksheet.write(row, 5, subtotal)
+            row += 1
+
+    workbook.close()
+    return response
