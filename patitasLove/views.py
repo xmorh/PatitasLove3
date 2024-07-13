@@ -3,6 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Producto, Carrito, CarritoItem, Venta, VentaProducto
 from .forms import ProductoForm
 from django.core import serializers
+from django.db.models import Q
+from datetime import datetime
+import re
 
 # Create your views here.
 
@@ -158,20 +161,28 @@ def crear_venta(request):
 def pago_exitoso(request):
     return render(request, 'patitasLove/pago_exitoso.html')
 
-
 def listar_ventas(request):
+    # Obtener las ventas
     ventas = Venta.objects.all()
+
+    # Obtener los parámetros de fecha desde y hasta de la solicitud GET
+    fecha_desde_str = request.GET.get('fecha_desde')
+    fecha_hasta_str = request.GET.get('fecha_hasta')
+
+    # Convertir las cadenas de fecha a objetos datetime si existen
+    if fecha_desde_str and fecha_hasta_str:
+        fecha_desde = datetime.strptime(fecha_desde_str, '%Y-%m-%d').date()
+        fecha_hasta = datetime.strptime(fecha_hasta_str, '%Y-%m-%d').date()
+
+        # Filtrar las ventas por fecha usando Q objects para combinar condiciones OR
+        ventas = ventas.filter(
+            Q(fecha__date__gte=fecha_desde) &
+            Q(fecha__date__lte=fecha_hasta)
+        )
+
+    # Contexto para pasar a la plantilla
     data = {
         'ventas': ventas
     }
-    return render(request, 'patitasLove/listar_ventas.html', data)
 
-def pago_exitoso(request):
-    return render(request, 'patitasLove/pago_exitoso.html')
-
-def listar_ventas(request):
-    ventas = Venta.objects.all()
-    data = {
-        'ventas': ventas
-    }
     return render(request, 'patitasLove/ventas/listar_ventas.html', data)
