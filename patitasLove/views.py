@@ -1,8 +1,11 @@
+import json
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Producto, Carrito, CarritoItem
+from .models import Producto, Carrito, CarritoItem, Venta, VentaProducto
 from .forms import ProductoForm
+from django.core import serializers
 
 # Create your views here.
+
 
 def home(request):
     productos = Producto.objects.all()
@@ -17,9 +20,6 @@ def contacto(request):
 
 def registro(request):
     return render(request, 'patitasLove/registro.html')
-
-def sesion(request):
-    return render(request, 'patitasLove/sesion.html')
 
 def agregar_al_carrito(request, producto_id):
    
@@ -50,10 +50,9 @@ def ver_carrito(request):
         carrito = None
         items = []
         total = 0
-    
     data = {
         'items': items,
-        'total': total
+        'total': total,
     }
     return render(request, 'patitasLove/carrito.html', data)
 
@@ -109,3 +108,70 @@ def eliminar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
     producto.delete()
     return redirect(to='listar_producto')
+
+# def crear_venta(request):
+#     venta = Venta.objects.create()
+#     carrito_id = request.session.get('carrito_id')
+#     if request.method == 'POST':
+#         data = CarritoItem.objects.all()
+#         carrito_items_json = serializers.serialize('json', data)
+#         carrito_items = json.loads(carrito_items_json)  # Convertir cadena JSON a lista de diccionarios
+        
+#         carrito_items_filtrados = [item for item in carrito_items if item['fields']['carrito'] == carrito_id]
+
+#         for carrito_item in carrito_items_filtrados:
+#             producto = Producto.objects.get(id=carrito_item['fields']['producto'])
+#             item, created = VentaProducto.objects.get_or_create(venta=venta, producto=producto)
+            
+#             if carrito_item['fields']['cantidad'] > 1:
+#                 item.cantidad = carrito_item['fields']['cantidad']
+#                 item.save()
+
+#     return redirect(to='pago_exitoso')
+
+def crear_venta(request):
+    carrito_id = request.session.get('carrito_id')
+    if not carrito_id:
+        # Si no hay carrito, redirigir a la página de carrito
+        return redirect('ver_carrito')
+
+    carrito = get_object_or_404(Carrito, id=carrito_id)
+    items = CarritoItem.objects.filter(carrito=carrito)
+
+    if not items.exists():
+        # Si no hay ítems en el carrito, redirigir a la página de carrito
+        return redirect('ver_carrito')
+
+    venta = Venta.objects.create()
+
+    for item in items:
+        VentaProducto.objects.create(venta=venta, producto=item.producto, cantidad=item.cantidad)
+    
+    # Eliminar todos los ítems del carrito
+    items.delete()
+
+    # Limpiar el carrito de la sesión
+    del request.session['carrito_id']
+
+    return redirect('pago_exitoso')
+
+def pago_exitoso(request):
+    return render(request, 'patitasLove/pago_exitoso.html')
+
+
+def listar_ventas(request):
+    ventas = Venta.objects.all()
+    data = {
+        'ventas': ventas
+    }
+    return render(request, 'patitasLove/listar_ventas.html', data)
+
+def pago_exitoso(request):
+    return render(request, 'patitasLove/pago_exitoso.html')
+
+def listar_ventas(request):
+    ventas = Venta.objects.all()
+    data = {
+        'ventas': ventas
+    }
+    return render(request, 'patitasLove/ventas/listar_ventas.html', data)
